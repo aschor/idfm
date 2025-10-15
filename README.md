@@ -27,7 +27,7 @@ So with the default settings you generate about 400 calls per day, thus you are 
 ## Installation
 
 0. Make sure you have [HACS](https://github.com/hacs/integration) installed.
-1. Open HACS, search for "Ile de france Mobilite" integration, install it.
+1. Open HACS, search for the integration called `Ile de france Mobilite` (or `idfm`), install it.
 2. Restart HAOS.
 3. Go to `settings` > `Devices & services` > `Add integration` > and add `Ile de france mobilite`
 
