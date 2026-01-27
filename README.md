@@ -24,6 +24,13 @@ The limitations are set to:
 
 So with the default settings you generate about 400 calls per day, thus you are limited to a maximum of 50 instances.
 
+## Installation
+
+0. Make sure you have [HACS](https://github.com/hacs/integration) installed.
+1. Open HACS, search for the integration called `Ile de france Mobilite` (or `idfm`), install it.
+2. Restart HAOS.
+3. Go to `settings` > `Devices & services` > `Add integration` > and add `Ile de france mobilite`
+
 ## Manually Updating
 
 If the default interval is not ok for you, you can decide to manually trigger the updates of the entities:
