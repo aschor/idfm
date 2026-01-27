@@ -28,8 +28,8 @@ So with the default settings you generate about 400 calls per day, thus you are 
 
 0. Make sure you have [HACS](https://github.com/hacs/integration) installed.
 1. Open HACS, search for the integration called `Ile de france Mobilite` (or `idfm`), install it.
-2. Restart HAOS.
-3. Go to `settings` > `Devices & services` > `Add integration` > and add `Ile de france mobilite`
+2. Restart Home-Assistant.
+3. Go to `Settings` > `Devices & services` > `Add integration` > and add `Ile de france mobilite`
 
 ## Manually Updating
 
@@ -46,3 +46,4 @@ service: homeassistant.update_entity
 target:
   entity_id: sensor.idfm_gare_de_lyon_paris_chateau_de_vincennes_0
 ```
+
