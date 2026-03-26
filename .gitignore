@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+idfm_debug.log
+.env
+idfm_cache/
+.python-version

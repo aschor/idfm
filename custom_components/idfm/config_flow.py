@@ -98,12 +98,14 @@ class IDFMFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         if CONF_LINE in user_input:
             for l in lines:
-                if l.name == user_input[CONF_LINE]:
+                if l.id == user_input[CONF_LINE]:
                     self.data[CONF_LINE] = l.id
                     self.data[CONF_LINE_NAME] = l.name
                     return await self.async_step_stop()
 
-        names = [l.name for l in lines]
+        lines_dict = {l.id: f"{l.name} ({l.id})" for l in lines}
+        sorted_lines = dict(sorted(lines_dict.items(), key=lambda item: item[1]))
+        default_line = list(sorted_lines.keys())[0] if sorted_lines else None
 
         return self.async_show_form(
             step_id="line",
@@ -111,8 +113,8 @@ class IDFMFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(
                         CONF_LINE,
-                        default=user_input.get(CONF_LINE) or names[0],
-                    ): vol.In(sorted(names))
+                        default=user_input.get(CONF_LINE) or default_line,
+                    ): vol.In(sorted_lines)
                 }
             ),
             errors={},
