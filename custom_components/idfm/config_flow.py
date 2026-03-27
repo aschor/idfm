@@ -14,6 +14,7 @@ from .const import (
     CONF_EXCLUDE_ELEVATORS,
     CONF_LINE,
     CONF_LINE_NAME,
+    CONF_SCAN_INTERVAL,
     CONF_STOP,
     CONF_STOP_NAME,
     CONF_TOKEN,
@@ -46,6 +47,7 @@ class IDFMFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             self.data[CONF_TOKEN] = user_input[CONF_TOKEN]
             self.data[CONF_EXCLUDE_ELEVATORS] = user_input[CONF_EXCLUDE_ELEVATORS]
             self.data[CONF_NB_ENTITIES] = user_input[CONF_NB_ENTITIES]
+            self.data[CONF_SCAN_INTERVAL] = user_input[CONF_SCAN_INTERVAL]
             self._client = IDFMApi(self._session, user_input[CONF_TOKEN], timeout=300)
             return await self.async_step_transport()
 
@@ -55,6 +57,10 @@ class IDFMFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_TOKEN): str,
                 vol.Required(CONF_EXCLUDE_ELEVATORS, default=True): bool,
                 vol.Required(CONF_NB_ENTITIES, default=4): vol.All(
+                    vol.Range(min=1),
+                    vol.Coerce(int)
+                ),
+                vol.Required(CONF_SCAN_INTERVAL, default=3): vol.All(
                     vol.Range(min=1),
                     vol.Coerce(int)
                 ),

@@ -30,8 +30,9 @@ STOP_NAME_CITY = "Rambouillet - Rambouillet"
 
 TRANSPORT = "BUS" # Options habituelles: "METRO", "TRAM", "BUS", "TRAIN"
 LINE_ID = "C00183" #bus 5302 # la ligne est indisponible au 26/03/2026
-# LINE_ID = "C02638" #bus 5304
+LINE_ID = "C02638" #bus 5304
 STOP_NAME_CITY = "Maréchal Juin - Rambouillet"
+STOP_NAME_CITY = "Bernard Bataille - Gazeran"
 #2026-03-26 11:00:35,349 - INFO - stop : StopData(name='Rambouillet', stop_id='STIF:StopPoint:Q:427870:', x='48.644638872398815', y='1.8337103324105775', zip_code='78517', city='Rambouillet', exchange_area_id='STIF:StopArea:SP:60665:', exchange_area_name='Rambouillet')
 # ==============================================================================
 

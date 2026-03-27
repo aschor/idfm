@@ -19,6 +19,7 @@ from .const import (
     CONF_DIRECTION,
     CONF_EXCLUDE_ELEVATORS,
     CONF_LINE,
+    CONF_SCAN_INTERVAL,
     CONF_STOP,
     CONF_TOKEN,
     CONF_TRANSPORT,
@@ -28,7 +29,7 @@ from .const import (
     STARTUP_MESSAGE,
 )
 
-SCAN_INTERVAL = timedelta(minutes=3)
+DEFAULT_SCAN_INTERVAL = timedelta(minutes=3)
 PLATFORMS = [Platform.BINARY_SENSOR, Platform.CALENDAR, Platform.SENSOR]
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
@@ -51,6 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     destination = entry.data.get(CONF_DESTINATION)
     stop_area_id = entry.data.get(CONF_STOP)
     exclude_elevators = entry.data.get(CONF_EXCLUDE_ELEVATORS) or True
+    scan_interval = timedelta(minutes=entry.data.get(CONF_SCAN_INTERVAL, 3))
 
     session = async_get_clientsession(hass)
     client = IDFMApi(session, entry.data.get(CONF_TOKEN), timeout=300)
@@ -64,6 +66,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         destination=destination,
         direction=direction,
         exclude_elevators=exclude_elevators,
+        scan_interval=scan_interval,
     )
     await coordinator.async_refresh()
 
@@ -99,6 +102,7 @@ class IDFMDataUpdateCoordinator(DataUpdateCoordinator):
         direction: str,
         destination: str,
         exclude_elevators: bool,
+        scan_interval: timedelta = DEFAULT_SCAN_INTERVAL,
     ) -> None:
         """Initialize."""
         self.api = client
@@ -110,7 +114,7 @@ class IDFMDataUpdateCoordinator(DataUpdateCoordinator):
         self.exclude_elevators = exclude_elevators
         self.platforms = []
 
-        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
+        super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=scan_interval)
 
     async def async_update(self):
         await self._async_update_data()
