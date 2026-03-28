@@ -19,7 +19,7 @@ from idfm_api.models import TransportType
 if os.path.exists(".env"):
     with open(".env", "r") as f:
         for line in f:
-            if "=" in line:
+            if "=" in line and not line.startswith("#"):
                 k, v = line.strip().split("=", 1)
                 os.environ[k] = v.strip('"').strip("'")
 
@@ -28,12 +28,13 @@ TRANSPORT = "TRAIN" # Options habituelles: "METRO", "TRAM", "BUS", "TRAIN"
 LINE_ID = "C01744" # Ligne N
 STOP_NAME_CITY = "Rambouillet - Rambouillet"
 
-TRANSPORT = "BUS" # Options habituelles: "METRO", "TRAM", "BUS", "TRAIN"
-LINE_ID = "C00183" #bus 5302 # la ligne est indisponible au 26/03/2026
-# LINE_ID = "C02638" #bus 5304
-STOP_NAME_CITY = "Maréchal Juin - Rambouillet"
-#2026-03-26 11:00:35,349 - INFO - stop : StopData(name='Rambouillet', stop_id='STIF:StopPoint:Q:427870:', x='48.644638872398815', y='1.8337103324105775', zip_code='78517', city='Rambouillet', exchange_area_id='STIF:StopArea:SP:60665:', exchange_area_name='Rambouillet')
-# ==============================================================================
+# TRANSPORT = "BUS" # Options habituelles: "METRO", "TRAM", "BUS", "TRAIN"
+# LINE_ID = "C00183" #bus 5302 # la ligne est indisponible au 26/03/2026
+# # LINE_ID = "C02638" #bus 5304
+# STOP_NAME_CITY = "Maréchal Juin - Rambouillet"
+# # STOP_NAME_CITY = "Bernard Bataille - Gazeran"
+# #2026-03-26 11:00:35,349 - INFO - stop : StopData(name='Rambouillet', stop_id='STIF:StopPoint:Q:427870:', x='48.644638872398815', y='1.8337103324105775', zip_code='78517', city='Rambouillet', exchange_area_id='STIF:StopArea:SP:60665:', exchange_area_name='Rambouillet')
+# # ==============================================================================
 
 # --- LOGGING ---
 logging.basicConfig(
@@ -238,6 +239,25 @@ async def main():
             except Exception as e:
                 logger.error(f"PLANTAGE (Destinations) - Autre Erreur: {e}")
                 
+
+            
+            # 4. Traffic (Nouvel appel demandé)
+            logger.info("=== Etape 4 : Récupération du trafic pour 'Paris Montparnasse' ===")
+            try:
+                # Appel spécifique demandé par l'utilisateur
+                traffic = await client.get_traffic(
+                    config_data["stop_id"], 
+                    destination_name="Paris Montparnasse", 
+                    line_id=config_data["line_id"]
+                )
+                logger.info(f"Nombre de résultats : {len(traffic)}")
+                for t in traffic:
+                    # Log de l'objet TrafficData complet pour inspection
+                    logger.info(f"TRAFFIC DATA: {t}")
+                    
+            except Exception as e:
+                logger.error(f"PLANTAGE (Traffic) - Erreur: {e}")
+
             logger.info("Test terminé.")
             
         except Exception as global_err:
