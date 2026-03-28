@@ -7,6 +7,6 @@
   "documentation": "https://github.com/aschor/idfm-api",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/aschor/idfm-api/issues",
-  "requirements": ["idfm-api @ git+https://github.com/aschor/idfm-api.git@dev"],
+  "requirements": ["idfm-api @ git+https://github.com/aschor/idfm-api.git"],
   "version": "2.3.2"
 }
